@@ -91,8 +91,7 @@ def main():
     parser.add_argument("-v", "--verbose", help="increase output verbosity",
                         action="store_true")
 
-    # todo: read version from file
-    parser.add_argument('-V', action='version', version='%(prog)s 2.0')
+    parser.add_argument('-V', action='version', version='%(prog)s' + open('VERSION').readline().strip())
 
     parser.add_argument("-o", "-w", dest="out_file",
                         help="output file path (export and config subcommands)")

@@ -1,0 +1,113 @@
+# {{ rolename }}
+
+{{ synopsis }}
+
+This role was carefully selected to be part an ultimate deck of roles to manage
+your infrastructure.
+
+All role are documented in this [ansible-masterbook](http://127.0.0.1:8000/)
+
+# Requirements
+
+{{ galaxy_info.requirements|default('None.') }}
+
+# Role Variables
+
+## All vars in table format.
+
+{% if galaxy_info.required_variables %}
+## Required variables:
+| Parameter      | Example    | Default    | Comment |
+|----------------|------------|------------|---------|
+{% for var in meta_info.required_variables%}
+|`{{var.key}}`|`{{var.example}}`|{{var.description}}|
+{% endfor %}
+{% endif %}
+
+## Default vars
+
+{% if role_default_vars is defined %}
+More details about the defaults. From the `defaults/main.yml`.
+
+```yaml
+{{  role_default_vars }}
+{% endif %}
+
+# Examples
+
+Install the role either using Ansible-Galaxy or manually.
+
+## Ansible Galaxy installation and usage
+
+```shell
+ansible-galaxy install {{galaxy_info.author}}
+```
+
+```yaml
+- hosts: all
+  roles:
+    - role: {{galaxy_info.author}}.{{rolename|replace('ansible-','')}}
+```
+
+## Install with git
+
+```shell
+git clone git@github.com:{{github_account}}/{{rolename}}.git /path/to/roles_path
+
+```yaml
+- hosts: all
+  roles:
+  - role: {{rolename|replace('ansible-','')}}
+```
+
+# Dependencies
+
+{% if galaxy_info.dependencies|length() %}
+{% for dependencie in galaxy_info.dependencies %}
+ * {{ dependencie }}
+{% endfor %}
+{% else %}
+None.
+{% endif %}
+{# #}
+{# read todos from meta/main.yml #}
+{% if todos is defined %}
+# Todo
+
+{% for todo in todos %}
+  * {{ todo }}
+  {% endfor %}
+  {% endif %}
+
+# License
+
+{{ galaxy_info.license }}.
+
+# Author Information
+
+{{ galaxy_info.author }}
+
+***
+
+This README was generated using ansidoc. This tool is available on pypi!
+
+  {#
+  {% block badges %}
+  {% if ansigenome_info.travis|d() %}
+  [![Travis CI](http://img.shields.io/travis/{{ scm.user + '/' + galaxy_info.slug
+  }}.svg?style=flat)](http://travis-ci.org/{{ scm.user + '/' + galaxy_info.slug
+  }})
+  {% endif %}
+  {% if ansigenome_info.galaxy_id|d() %}
+  [![Ansible Galaxy](http://img.shields.io/badge/galaxy-{{ galaxy_info.galaxy_name
+  | replace('-',
+  '--')}}-660198.svg?style=flat)](https://galaxy.ansible.com/detail#/role/{{
+  ansigenome_info.galaxy_id }})
+  {% endif %}
+  {% if galaxy_info.platforms|d() %}
+  [![Platforms](http://img.shields.io/badge/platforms-{{ galaxy_info.platforms
+  | map(attribute='name') | sort | join('%20/%20') | lower
+  }}-lightgrey.svg?style=flat)](#)
+  {% endif %}
+  {%- endblock %}
+  #}
