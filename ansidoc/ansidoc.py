@@ -1,14 +1,10 @@
-#!/usr/bin/env python3
-
-import os
-import argparse
+import sys
 
 # fixme: import only safe_load
 # from yaml import yaml.safe_load
 import yaml
 from jinja2 import Environment, PackageLoader, FileSystemLoader
 
-# Generate documentation on the fly based on Ansible default variables
 # to convert markdown to rst
 # import yaml2rst
 
@@ -21,8 +17,8 @@ from jinja2 import Environment, PackageLoader, FileSystemLoader
 # #     toc.write(TOCTREE_TEMPLATE)
 
 #     # adding a symlink for each roles
-#     if not os.path.islink(element + "-docs"):
-#         os.symlink(os.path.abspath('..') + "/roles/" + element + "/docs", \
+#     if not path.islink(element + "-docs"):
+#         os.symlink(path.abspath('..') + "/roles/" + element + "/docs", \
 #                    element + "-docs")
 
 #         outfile.write(yaml2rst.convert_text(infile.read()))
@@ -33,6 +29,7 @@ from jinja2 import Environment, PackageLoader, FileSystemLoader
 
 def _load_yml_file(path):
     """ safe_load yaml file """
+
     with open(path, 'r') as stream:
         return yaml.safe_load(stream)
 
@@ -50,20 +47,28 @@ def _write_file(data, filepath):
 
 def make_role_doc(rolepath):
 
+    """
+    Generate documentation on the fly for a single role based on Ansible default
+    variables and meta/main.yml
+    """
+
     # load defaults/main.yml file
-    if os.path.isfile(rolepath + "/defaults/main.yml"):
+    if path.isfile(rolepath + "/defaults/main.yml"):
         with open(rolepath + "/defaults/main.yml", 'r') as f:
             # fixme: "skip ---\n in a better way"
             f.seek(5)
             default_vars = f.read()
 
-    if os.path.isfile(rolepath + "/meta/main.yml"):
+    # load meta/main.yml
+    if path.isfile(rolepath + "/meta/main.yml"):
         metainfo = _load_yml_file(rolepath + "/meta/main.yml")
         print(metainfo)
 
-    # render readme
+    # load template and create templating environment
     env = Environment(loader=FileSystemLoader('ansidoclib'),
                       lstrip_blocks='true', trim_blocks='true')
+
+    # render readme
     template = env.get_template('readme.j2')
 
     _write_file(template.render(metainfo, role_default_vars=default_vars),
@@ -75,34 +80,10 @@ def ansidoc(args):
     # this only works if roles_path basename is 'roles'
     # check wether give path is a rolepath or a roledir
     path = args.path
-    if os.path.basename(path) == 'roles':
+    if path.basename(path) == 'roles':
 
         for role in os.listdir(path):
             print("processing " + role + "...")
             make_role_doc(role)
     else:
         make_role_doc(path)
-
-
-def main():
-    # create parser objects
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument("-v", "--verbose", help="increase output verbosity",
-                        action="store_true")
-
-    parser.add_argument('-V', action='version', version='%(prog)s' + open('VERSION').readline().strip())
-
-    parser.add_argument("-o", "-w", dest="out_file",
-                        help="output file path (export and config subcommands)")
-
-    parser.add_argument("path", help="search path, either roles_path wich is a \
-                        roles dir or a path to a single roles. If roles_path \
-                        basename is 'roles', it will loop over subdirectories \
-                        assuming each of them contains a roles")
-
-    args = parser.parse_args()
-    ansidoc(args)
-
-if __name__ == "__main__":
-    main()
