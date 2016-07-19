@@ -1,43 +1,45 @@
-#!/usr/bin/env python3
+"""Module main entry point."""
 
+import sys
 import argparse
-from os import path
-import ansidoc
+from . import cli
 
 
-def get_version(prog):
-    """
-    Retreive software version
-    """
-    print(prog + 'from callback')
-    from ansidoc import __version__
-    return __version__.__version__
+def get_version(package):
+    """Retreive software version."""
+    from . import __version__
+    return __version__.__version__ + "\nPython " + sys.version
 
 
 def main():
+    """Main entry point."""
 
-    PACKAGE_DIR = path.abspath(__file__)
-    print(PACKAGE_DIR)
+    # PACKAGE_DIR = path.abspath(__file__)
+    # print(PACKAGE_DIR)
 
-    # create parser objects
+    # parser_foo.set_defaults
+
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-v", "--verbose", help="increase output verbosity",
+    # mostly always needed options
+    parser.add_argument("-v",
+                        "--verbose",
+                        help="increase output verbosity",
                         action="store_true")
 
-    parser.add_argument('-V', action='version',
+    parser.add_argument('-V',
+                        '--version',
+                        action='version',
                         version='%(prog)s ' + get_version('%(prog)s'))
 
-    parser.add_argument("-o", "-w", dest="out_file",
-                        help="output file path (export and config subcommands)")
-
-    parser.add_argument("path", help="search path, either roles_path wich is a \
-                        roles dir or a path to a single roles. If roles_path \
-                        basename is 'roles', it will loop over subdirectories \
-                        assuming each of them contains a roles")
-
+    # further customize the parser object
+    cli._augment_parser(parser)
     args = parser.parse_args()
-    ansidoc(args)
+
+    exit_code = cli.run(**vars(args))
+    sys.exit(exit_code)
 
 if __name__ == "__main__":
     main()
+
+# print(__name__ + ' from main')

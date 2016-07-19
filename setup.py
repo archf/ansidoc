@@ -14,25 +14,19 @@ PACKAGE_VERSION_FILE_HEADER = """\
 
 
 def get_long_description(file):
-    """
-    Get the long description from the README file
-    """
+    """Get the long description from the README file."""
     with open(file, encoding='utf-8') as f:
         return f.read()
 
 
 def get_version(file):
-    """
-    Get current release version from repository version file
-    """
+    """Get current release version from repository version file."""
     with open(file) as f:
         return f.readline().strip()
 
 
 def update_software_version(package, header, version):
-    """
-    Generate __version__.py inside a given package
-    """
+    """Generate __version__.py inside a given package."""
     with open(path.join(package, '__version__.py'), 'w') as f:
         f.write(header + "__version__ = " + "'" + version + "'")
 
@@ -89,7 +83,7 @@ setup(
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+    packages=find_packages(exclude=['contrib', 'docs', 'tests', 'env']),
 
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
@@ -99,7 +93,7 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    # install_requires=['peppercorn'],
+    install_requires=['jinja2', 'PyYaml'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,

@@ -1,6 +1,6 @@
 env
 .ropeproject
-.pyc
+*.pyc
 build/
 dist/
 */__pycache__*
