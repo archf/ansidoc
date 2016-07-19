@@ -47,7 +47,7 @@ setup(
     long_description=get_long_description(LONG_DESCRIPTION_FILE),
 
     # The project's main homepage.
-    url='https://github.com/pypa/sampleproject',
+    url='git@github.com:archf/ansidoc.git',
 
     # Author details
     author='Felix Archambault',
