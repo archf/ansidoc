@@ -2,6 +2,8 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
+from m2r import M2R
+
 
 PACKAGE_NAME = 'ansidoc'
 REPOSITORY_VERSION_FILE = 'VERSION'
@@ -15,8 +17,9 @@ PACKAGE_VERSION_FILE_HEADER = """\
 
 def get_long_description(file):
     """Get the long description from the README file."""
+    m2r = M2R()
     with open(file, encoding='utf-8') as f:
-        return f.read()
+        return m2r(f.read())
 
 
 def get_version(file):
@@ -43,11 +46,11 @@ setup(
     # https://packaging.python.org/en/latest/single_source_version.html
     version=VERSION,
 
-    description='Manage ansible role documentation and more',
+    description='Manage ansible role documentation',
     long_description=get_long_description(LONG_DESCRIPTION_FILE),
 
     # The project's main homepage.
-    url='git@github.com:archf/ansidoc.git',
+    url='https://github.com/archf/ansidoc',
 
     # Author details
     author='Felix Archambault',
@@ -62,11 +65,13 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
+        'Topic :: Software Development :: Documentation',
+
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: MIT License',
@@ -79,11 +84,12 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
 
-    keywords='ansible documentation generation',
+    keywords=["ansible", "documentation", "generation"],
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
-    packages=find_packages(exclude=['contrib', 'docs', 'tests', 'env']),
+    packages=find_packages(exclude=['contrib', 'docs', 'tests',
+                                    'env', 'build']),
 
     # Alternatively, if you want to distribute just a my_module.py, uncomment
     # this:
@@ -95,14 +101,19 @@ setup(
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=['jinja2', 'PyYaml'],
 
+    setup_requires=['m2r'],
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
     # for example:
     # $ pip install -e .[dev,test]
-    # extras_require={
-    #     'dev': ['check-manifest'],
+    # 'dev': ['check-manifest'],
     #     'test': ['coverage'],
-    # },
+
+    # extras_require={
+    #     'dev': ['m2r', 'ipdb'],
+    #     },
+
+    # include_package_data = True,
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.

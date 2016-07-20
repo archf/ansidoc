@@ -5,11 +5,7 @@ from os import path, symlink
 import yaml
 from jinja2 import Environment, PackageLoader
 
-# to convert markdown to rst
 # import yaml2rst
-
-# from m2r import M2R
-# m2r = M2R()
 
 # # def gen_toctree(title,text):
 # #     toc = open("../roles/" + title + "/docs/index.rst",'w')
