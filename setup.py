@@ -1,6 +1,6 @@
+#!/usr/bin/env python3
+
 from setuptools import setup, find_packages
-# To use a consistent encoding
-from codecs import open
 from os import path
 from m2r import M2R
 
@@ -84,7 +84,7 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
 
-    keywords=["ansible", "documentation", "generation"],
+    keywords=["ansible", "documentation generation"],
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
@@ -101,7 +101,7 @@ setup(
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=['jinja2', 'PyYaml'],
 
-    setup_requires=['m2r'],
+    # setup_requires=['m2r'],
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
     # for example:

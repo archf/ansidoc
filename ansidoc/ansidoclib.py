@@ -111,11 +111,12 @@ def make_role_doc(rolepath, **kwargs):
 
     t = template.render(metainfo, role_default_vars=default_vars)
 
-    if verbose and (default_vars is not None and metainfo is not None):
+    if verbose:
         print(t)
 
+    # create readme file in rolepath/docs
     # makedirs(path.abspath(rolepath + "/docs"), mode=755, exist_ok=False)
 
-    # create file in rolepath/docs and rolepath/README.md
-    if not dry_run and (default_vars is not None and metainfo is not None):
+    # create readme file in rolepath/README.md
+    if not dry_run:
         _write_file(t, path.join(rolepath, "README.md"))

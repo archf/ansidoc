@@ -27,12 +27,13 @@ All role are documented in this [ansible-masterbook](http://127.0.0.1:8000/)
 #}
 
 ## Default vars
+{% if role_default_vars is not none %}
 
-{% if role_default_vars is defined %}
 More details about the defaults. From the `defaults/main.yml`.
 
 ```yaml
 {{  role_default_vars }}
+```
 {% endif %}
 
 # Examples
@@ -48,7 +49,7 @@ ansible-galaxy install {{galaxy_info.author}}
 ```yaml
 - hosts: all
   roles:
-    - role: {{galaxy_info.author}}.{{rolename|replace('ansible-','')}}
+    - role: {{github_account}}.{{rolename|replace('ansible-','')}}
 ```
 
 ## Install with git
@@ -63,9 +64,9 @@ git clone git@github.com:{{github_account}}/{{rolename}}.git /path/to/roles_path
 ```
 
 # Dependencies
+{% if dependencies|length() %}
 
-{% if galaxy_info.dependencies|length() %}
-{% for dependencie in galaxy_info.dependencies %}
+{% for dependencie in dependencies %}
  * {{ dependencie }}
 {% endfor %}
 {% else %}
@@ -74,6 +75,7 @@ None.
 {# #}
 {# read todos from meta/main.yml #}
 {% if todos is defined %}
+
 # Todo
 
 {% for todo in todos %}
@@ -90,8 +92,11 @@ None.
 {{ galaxy_info.author }}.
 
 ***
-
 This README was generated using ansidoc. This tool is available on pypi!
+
+```shell
+pip3 install ansidoc
+```
 
   {#
   {% block badges %}
