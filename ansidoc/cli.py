@@ -12,7 +12,7 @@ def _augment_parser(parser):
     #     dest="out_file",
     #     help="output file path (export and config subcommands)")
 
-    parser.add_argument("-d", action='store_true', dest="dry_run",
+    parser.add_argument("-d", "--dry-run", action='store_true', dest="dry_run",
                         help="dry run")
 
     parser.add_argument(

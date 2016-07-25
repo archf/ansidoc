@@ -1,19 +1,39 @@
 # {{ rolename }}
 
+{{ galaxy_info.description }}
+
 {{ synopsis }}
 
-This role was carefully selected to be part an ultimate deck of roles to manage
-your infrastructure.
-
-All role are documented in this [ansible-masterbook](http://127.0.0.1:8000/)
-
+{% if synopsis_epilogue is defined %}
+{{ synopsis_epilogue }}
+{% endif %}
 # Requirements
 
-{{ galaxy_info.requirements|default('None.') }}
+## Ansible version
+
+Minimum required ansible version is {{ galaxy_info.min_ansible_version }}.
+{% if requirements is defined and requirements|length() %}
+## Other considerations
+
+{{ requirements }}
+{% endif %}
 
 # Role Variables
-{#
 
+## Variables conditionally loaded
+
+{% if role_vars is not none %}
+Those variables from `vars/*.{yml,json}` are loaded dynamically during task
+runtime using the `include_vars` module.
+{% for el in role_vars %}
+
+Variables loaded from `vars/{{ el.filename }}`.
+
+```yaml
+{{ el.content }}
+```
+{% endfor %}
+{#
 ## All vars in table format.
 
 {% if galaxy_info.required_variables %}
@@ -25,15 +45,23 @@ All role are documented in this [ansible-masterbook](http://127.0.0.1:8000/)
 {% endfor %}
 {% endif %}
 #}
+{% else %}
+None.
+{% endif %}
 
 ## Default vars
-{% if role_default_vars is not none %}
 
-More details about the defaults. From the `defaults/main.yml`.
+{% if role_default_vars is not none %}
+{% for el in role_vars %}
+Defaults from `defaults/{{ el.filename }}`.
 
 ```yaml
-{{  role_default_vars }}
+{{ el.content }}
 ```
+{% endfor %}
+
+{% else %}
+None.
 {% endif %}
 
 # Examples
@@ -64,17 +92,17 @@ git clone git@github.com:{{github_account}}/{{rolename}}.git /path/to/roles_path
 ```
 
 # Dependencies
-{% if dependencies|length() %}
 
+{% if dependencies|length() %}
 {% for dependencie in dependencies %}
- * {{ dependencie }}
+  * {{ dependencie }}
 {% endfor %}
 {% else %}
 None.
 {% endif %}
 {# #}
 {# read todos from meta/main.yml #}
-{% if todos is defined %}
+{% if todos is defined and todos|length() %}
 
 # Todo
 
@@ -91,12 +119,20 @@ None.
 
 {{ galaxy_info.author }}.
 
-***
+---
 This README was generated using ansidoc. This tool is available on pypi!
 
 ```shell
 pip3 install ansidoc
+
+# validate by running a dry-run (will output result to stdout)
+ansidoc --dry-run <rolepath>
+
+# generate you role readme file
+ansidoc <rolepath>
 ```
+
+You can even use it programatically from sphinx. Check it out.
 
   {#
   {% block badges %}
