@@ -64,4 +64,4 @@ ansidocgen(dirpath=<path/to/role>, dry_run=True)
 
 # License
 
-Mit.
+MIT.
