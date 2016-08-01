@@ -24,12 +24,16 @@ def _load_yml_file(fpath):
 
 def _write_file(data, fpath):
     """write a file to disk only if content has changed."""
-    with open(fpath, 'r+') as f:
-        # replace content only if needed
-        if data != f.read():
-            f.truncate(0)
-            f.seek(0)
+    if not os.path.isfile(fpath):
+        with open(fpath, 'w') as f:
             f.write(data)
+    else:
+        with open(fpath, 'r+') as f:
+            # replace content only if needed
+            if data != f.read():
+                f.truncate(0)
+                f.seek(0)
+                f.write(data)
 
 
 def _get_filenames(dpath):
@@ -105,7 +109,7 @@ def _make_role_symlink(rolepath, target, verbose):
     symlink_target = os.path.abspath(os.path.join(rolepath, target))
 
     # symlink dst
-    symlink_name = os.path.basename(rolepath) + "-role-" + target
+    symlink_name = "role-" + os.path.basename(rolepath) + "-" + target
 
     if verbose:
         print("Generating symlink to role " + symlink_target + " ...")
@@ -174,4 +178,4 @@ def make_role_doc(rolepath, **kwargs):
     if not dry_run:
         _write_file(t, os.path.join(rolepath, "README.md"))
 
-    print("Role " + role + " ...done")
+    print("Role " + role + " ...done\n")

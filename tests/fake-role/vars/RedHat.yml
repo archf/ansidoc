@@ -1,0 +1,6 @@
+---
+
+fake_role_pkgs:
+  - rhel-pkg1
+  - rhel-pkg2
+  - rhel-pkg3

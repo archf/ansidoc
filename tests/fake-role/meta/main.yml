@@ -1,0 +1,43 @@
+---
+galaxy_info:
+  author: Chuck Norris
+  description: A role to install and configure default packages
+  license: MIT
+  min_ansible_version: 2.0
+  platforms:
+    - name: EL
+      versions:
+      - 7
+    - name: Fedora
+      versions:
+      - 21
+      - 22
+    - name: Ubuntu
+      versions:
+      - trusty
+    - name: Debian
+      versions:
+      - wheezy
+  galaxy_tags:
+    - development
+    - system
+
+dependencies: []
+rolename: ansible-fake_role
+github_account: nchuck
+todos: [] # (optional) list of todos to print in your README file
+requirements: [] # (optional) explanation of requirements to use your role
+
+# some details so people know what your role does.
+synopsis: |
+  This role will do blablabla...
+  - install packages
+  - add a few mounts
+  - configure a daemon
+  - ...
+
+synopsis_epilogue: |
+  This role was carefully selected to be part an ultimate deck of roles to manage
+  your infrastructure.
+
+  All roles' documentation is wrapped in this [convenient guide](http://127.0.0.1:8000/).

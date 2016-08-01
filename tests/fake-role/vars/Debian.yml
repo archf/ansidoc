@@ -1,0 +1,5 @@
+---
+fake_role_pkgs:
+  - debian-pkg1
+  - debian-pkg2
+  - debian-pkg3

@@ -7,20 +7,20 @@
 {% if synopsis_epilogue is defined %}
 {{ synopsis_epilogue }}
 {% endif %}
-# Requirements
+## Requirements
 
-## Ansible version
+### Ansible version
 
 Minimum required ansible version is {{ galaxy_info.min_ansible_version }}.
 {% if requirements is defined and requirements|length() %}
-## Other considerations
+### Other considerations
 
 {{ requirements }}
 {% endif %}
 
-# Role Variables
+## Role Variables
 
-## Variables conditionally loaded
+### Variables conditionally loaded
 
 {% if role_vars is not none %}
 Those variables from `vars/*.{yml,json}` are loaded dynamically during task
@@ -49,10 +49,10 @@ Variables loaded from `vars/{{ el.filename }}`.
 None.
 {% endif %}
 
-## Default vars
+### Default vars
 
-{% if role_default_vars is not none %}
-{% for el in role_vars %}
+{% if role_defaults is not none %}
+{% for el in role_defaults %}
 Defaults from `defaults/{{ el.filename }}`.
 
 ```yaml
@@ -64,11 +64,11 @@ Defaults from `defaults/{{ el.filename }}`.
 None.
 {% endif %}
 
-# Examples
+## Examples
 
 Install the role either using Ansible-Galaxy or manually.
 
-## Ansible Galaxy installation and usage
+### Ansible Galaxy installation and usage
 
 ```shell
 ansible-galaxy install {{galaxy_info.author}}
@@ -80,7 +80,7 @@ ansible-galaxy install {{galaxy_info.author}}
     - role: {{github_account}}.{{rolename|replace('ansible-','')}}
 ```
 
-## Install with git
+### Install with git
 
 ```shell
 git clone git@github.com:{{github_account}}/{{rolename}}.git /path/to/roles_path
@@ -91,9 +91,9 @@ git clone git@github.com:{{github_account}}/{{rolename}}.git /path/to/roles_path
   - role: {{rolename|replace('ansible-','')}}
 ```
 
-# Dependencies
+## Dependencies
 
-{% if dependencies|length() %}
+{% if dependencies is defined and dependencies|length() %}
 {% for dependencie in dependencies %}
   * {{ dependencie }}
 {% endfor %}
@@ -104,18 +104,18 @@ None.
 {# read todos from meta/main.yml #}
 {% if todos is defined and todos|length() %}
 
-# Todo
+## Todo
 
 {% for todo in todos %}
   * {{ todo }}
   {% endfor %}
   {% endif %}
 
-# License
+## License
 
 {{ galaxy_info.license }}.
 
-# Author Information
+## Author Information
 
 {{ galaxy_info.author }}.
 
@@ -133,24 +133,3 @@ ansidoc <rolepath>
 ```
 
 You can even use it programatically from sphinx. Check it out.
-
-  {#
-  {% block badges %}
-  {% if ansigenome_info.travis|d() %}
-  [![Travis CI](http://img.shields.io/travis/{{ scm.user + '/' + galaxy_info.slug
-  }}.svg?style=flat)](http://travis-ci.org/{{ scm.user + '/' + galaxy_info.slug
-  }})
-  {% endif %}
-  {% if ansigenome_info.galaxy_id|d() %}
-  [![Ansible Galaxy](http://img.shields.io/badge/galaxy-{{ galaxy_info.galaxy_name
-  | replace('-',
-  '--')}}-660198.svg?style=flat)](https://galaxy.ansible.com/detail#/role/{{
-  ansigenome_info.galaxy_id }})
-  {% endif %}
-  {% if galaxy_info.platforms|d() %}
-  [![Platforms](http://img.shields.io/badge/platforms-{{ galaxy_info.platforms
-  | map(attribute='name') | sort | join('%20/%20') | lower
-  }}-lightgrey.svg?style=flat)](#)
-  {% endif %}
-  {%- endblock %}
-  #}
