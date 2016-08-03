@@ -14,11 +14,6 @@ def get_version(package):
 def main():
     """Main entry point."""
 
-    # PACKAGE_DIR = path.abspath(__file__)
-    # print(PACKAGE_DIR)
-
-    # parser_foo.set_defaults
-
     parser = argparse.ArgumentParser()
 
     # mostly always needed options

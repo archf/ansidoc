@@ -52,8 +52,9 @@ cli.
 For example:
 
 ```python
-from ansidoc import ansidocgen
-ansidocgen(dirpath=<path/to/role>, dry_run=True)
+from ansidoc import Ansidoc
+ansidoc = Ansidoc(dirpath=<path/to/role>, dry_run=True)
+ansidoc.run()
 ```
 
 # wishlist
