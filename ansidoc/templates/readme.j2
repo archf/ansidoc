@@ -71,7 +71,7 @@ Install the role either using Ansible-Galaxy or manually.
 ### Ansible Galaxy installation and usage
 
 ```shell
-ansible-galaxy install {{galaxy_info.author}}
+ansible-galaxy install {{github_account}}.{{rolename|replace('ansible-','')}}
 ```
 
 ```yaml
@@ -82,8 +82,17 @@ ansible-galaxy install {{galaxy_info.author}}
 
 ### Install with git
 
+If you do not want a global install clone it to in your `roles_path`.
+
 ```shell
 git clone git@github.com:{{github_account}}/{{rolename}}.git /path/to/roles_path
+```
+
+But I often add it as a submdule in a given `playbook_dir` repository.
+
+```shell
+git submdule add git@github.com:{{github_account}}/{{rolename}}.git playbook_dir/roles/{{rolename|replace('ansible-','')}}
+```
 
 ```yaml
 - hosts: all
