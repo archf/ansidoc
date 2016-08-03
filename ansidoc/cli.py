@@ -1,7 +1,5 @@
 """Enhance parser object and run commands."""
-from os import path, listdir
-
-from .ansidoclib import make_role_doc
+from .ansidoclib import Ansidoc
 
 
 def _augment_parser(parser):
@@ -32,18 +30,9 @@ def _augment_parser(parser):
 
 def run(**kwargs):
     """
-    Runner.
+    Run the program.
 
-    Calls the make_role_doc function within a loop or not depending on
-    the dirpath basename. See dirpath positional argument help for more
-    details.
+    Create an Ansidoc objects and run it.
     """
-    dirpath = kwargs.get('dirpath')
-
-    if path.basename(dirpath) == 'roles':
-        # loop over multiple roles
-        for role in listdir(dirpath):
-            make_role_doc(path.join(dirpath, role), **kwargs)
-    else:
-        # run on a single role
-        make_role_doc(dirpath, **kwargs)
+    ansidoc = Ansidoc(**kwargs)
+    ansidoc.run()
