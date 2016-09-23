@@ -1,6 +1,8 @@
-# {{ rolename }}
+# ansible-{{ rolename }}
 
 {{ galaxy_info.description }}
+
+## Description
 
 {{ synopsis }}
 
@@ -51,6 +53,7 @@ None.
 
 ### Default vars
 
+{# print name and content #}
 {% if role_defaults is not none %}
 {% for el in role_defaults %}
 Defaults from `defaults/{{ el.filename }}`.
@@ -64,20 +67,20 @@ Defaults from `defaults/{{ el.filename }}`.
 None.
 {% endif %}
 
-## Examples
+## Installation
 
-Install the role either using Ansible-Galaxy or manually.
-
-### Ansible Galaxy installation and usage
+### Install with Ansible Galaxy
 
 ```shell
-ansible-galaxy install {{github_account}}.{{rolename|replace('ansible-','')}}
+ansible-galaxy install {{github_account}}.{{rolename}}
 ```
+
+Basic usage is:
 
 ```yaml
 - hosts: all
   roles:
-    - role: {{github_account}}.{{rolename|replace('ansible-','')}}
+    - role: {{github_account}}.{{rolename}}
 ```
 
 ### Install with git
@@ -85,20 +88,33 @@ ansible-galaxy install {{github_account}}.{{rolename|replace('ansible-','')}}
 If you do not want a global install clone it to in your `roles_path`.
 
 ```shell
-git clone git@github.com:{{github_account}}/{{rolename}}.git /path/to/roles_path
+git clone git@github.com:{{github_account}}/ansible-{{rolename}}.git /path/to/roles_path
 ```
 
 But I often add it as a submdule in a given `playbook_dir` repository.
 
 ```shell
-git submdule add git@github.com:{{github_account}}/{{rolename}}.git playbook_dir/roles/{{rolename|replace('ansible-','')}}
+git submdule add git@github.com:{{github_account}}/ansible-{{rolename}}.git playbook_dir/roles/{{rolename}}
 ```
+
+As the role is not managed by Ansible Galaxy, you do not have to specify the
+github user account.
+
+Basic usage is:
 
 ```yaml
 - hosts: all
   roles:
-  - role: {{rolename|replace('ansible-','')}}
+  - role: {{rolename}}
 ```
+
+{% if advanced_usage is defined %}
+## Advanced usage
+
+Here's a more complex example wich further illustrates usage.
+
+{{advanced_usage}}
+{%endif%}
 
 ## Dependencies
 
@@ -110,7 +126,7 @@ git submdule add git@github.com:{{github_account}}/{{rolename}}.git playbook_dir
 None.
 {% endif %}
 {# #}
-{# read todos from meta/main.yml #}
+{# read todos from docs/main.yml #}
 {% if todos is defined and todos|length() %}
 
 ## Todo

@@ -37,11 +37,12 @@ class Ansidoc():
         """
         Generate documentation on the fly for a single role.
 
-        Informations are picked in defaults/main.yml and meta/main.yml.
+        Informations are picked in defaults/*, vars/* meta/main.yml and
+        docs/*.yml.
         """
-        role = os.path.basename(rolepath)
+        rolename = os.path.basename(rolepath)
 
-        print("Generating doc for role " + role + "...")
+        print("Generating doc for role " + rolename + "...")
         if self.verbose:
             print("Current rolepath is : " + rolepath)
 
@@ -50,17 +51,12 @@ class Ansidoc():
             self._make_role_symlink(rolepath)
 
         # load meta/main.yml
-        meta_file = os.path.join(rolepath, "meta/main.yml")
-        if os.path.isfile(meta_file):
-            metainfos = helpers.load_yml_file(meta_file)
-            if self.verbose:
-                print("Loaded role meta/main.yml: \n\n")
-                print(metainfos)
-                print("\n")
-        else:
-            metainfos = None
-            if self.verbose:
-                print(meta_file + " doesn't exist...")
+        metainfos = helpers.load_yml_file(
+            os.path.join(rolepath, "meta/main.yml"), self.verbose)
+
+        # load docs/main.yml
+        docfile = helpers.load_yml_file(
+            os.path.join(rolepath, "docs/docs.yml"), self.verbose)
 
         # load files in vars/*
         vars_files = helpers.read_files(
@@ -72,13 +68,13 @@ class Ansidoc():
 
         # load template and create templating environment
         env = Environment(loader=PackageLoader('ansidoc', 'templates'),
-                          lstrip_blocks=True,
-                          trim_blocks=True)
+                          lstrip_blocks=True, trim_blocks=True)
 
         # render readme
         template = env.get_template('readme.j2')
 
-        t = template.render(metainfos,
+        t = template.render({**metainfos, **docfile},
+                            rolename=rolename,
                             role_vars=vars_files,
                             role_defaults=defaults_files)
 
@@ -92,7 +88,7 @@ class Ansidoc():
         if not self.dry_run:
             helpers.write_file(t, os.path.join(rolepath, "README.md"))
 
-        print("Role " + role + " ...done\n")
+        print("Role " + rolename + " ...done\n")
 
     def run(self):
         """

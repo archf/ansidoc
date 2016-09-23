@@ -13,7 +13,6 @@ def get_version(package):
 
 def main():
     """Main entry point."""
-
     parser = argparse.ArgumentParser()
 
     # mostly always needed options

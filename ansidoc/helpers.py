@@ -1,14 +1,23 @@
 import os
 import fnmatch
-# fixme: unable to import only safe_load
-# from yaml import yaml.safe_load
 import yaml
 
 
-def load_yml_file(fpath):
-    """safe_load yaml file."""
-    with open(fpath, 'r') as stream:
-        return yaml.safe_load(stream)
+def load_yml_file(fpath, verbose):
+    """safe_load a yaml file."""
+    if os.path.isfile(fpath):
+        with open(fpath, 'r') as stream:
+            content = yaml.safe_load(stream)
+        if verbose:
+            print("Loaded " + fpath + ":\n\n")
+            print(content)
+            print("\n")
+    else:
+        content = None
+        if verbose:
+            print(fpath + " doesn't exist...")
+
+    return content
 
 
 def write_file(data, fpath):
@@ -34,7 +43,7 @@ def get_filenames(dpath):
 
 def read_file(fpath):
     """
-    Read a file a literaly return content.
+    Read a file and literaly return content.
 
     If file is yaml, it must skip the stream header.
     """
