@@ -35,14 +35,14 @@ class Ansidoc():
 
     def _make_role_doc(self, rolepath):
         """
-        Generate documentation on the fly for a single role.
+        Generate documentation for a single role.
 
         Informations are picked in defaults/*, vars/* meta/main.yml and
         docs/*.yml.
         """
         rolename = os.path.basename(rolepath)
 
-        print("Generating doc for role " + rolename + "...")
+        print("Generating doc for role " + rolename + "...\n")
         if self.verbose:
             print("Current rolepath is : " + rolepath)
 
@@ -73,8 +73,10 @@ class Ansidoc():
         # render readme
         template = env.get_template('readme.j2')
 
-        t = template.render({**metainfos, **docfile},
+        # render method accepts the same arguments as the dict constructor
+        t = template.render(metainfos,
                             rolename=rolename,
+                            role_doc=docfile,
                             role_vars=vars_files,
                             role_defaults=defaults_files)
 

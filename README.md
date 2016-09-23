@@ -17,7 +17,7 @@ todos: [] # (optional) list of todos to print in your README file
 requirements: [] # (optional) explanation of requirements to use your role
 
 # some details so people know what your role does.
-synopsis: |
+description: |
   This role will do blablabla...
   - install packages
   - add a few mounts

@@ -11,12 +11,12 @@ def _augment_parser(parser):
     #     help="output file path (export and config subcommands)")
 
     parser.add_argument("-d", "--dry-run", action='store_true', dest="dry_run",
-                        help="dry run")
+                        help="dry run, will print result to stdout")
 
     parser.add_argument(
         "-s",
         dest="target",
-        help="(docs | README.md ) Create a symlink in PWD to TARGET. This is \
+        help="(docs | README.md) Create a symlink in PWD to TARGET. This is \
             usefull when used from sphinx as you cannot add relative entries \
             such as '../*' in the toctree. If unspecified, no symlink is \
             created")

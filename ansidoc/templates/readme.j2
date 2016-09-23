@@ -2,19 +2,18 @@
 
 {{ galaxy_info.description }}
 
+{% if role_doc.description is not none %}
 ## Description
 
-{{ synopsis }}
+{{ role_doc.description }}
 
-{% if synopsis_epilogue is defined %}
-{{ synopsis_epilogue }}
 {% endif %}
 ## Requirements
 
 ### Ansible version
 
 Minimum required ansible version is {{ galaxy_info.min_ansible_version }}.
-{% if requirements is defined and requirements|length() %}
+{% if role_doc.requirements is defined and role_doc.requirements|length() %}
 ### Other considerations
 
 {{ requirements }}
@@ -72,7 +71,7 @@ None.
 ### Install with Ansible Galaxy
 
 ```shell
-ansible-galaxy install {{github_account}}.{{rolename}}
+ansible-galaxy install {{role_doc.github_account}}.{{rolename}}
 ```
 
 Basic usage is:
@@ -80,21 +79,21 @@ Basic usage is:
 ```yaml
 - hosts: all
   roles:
-    - role: {{github_account}}.{{rolename}}
+    - role: {{role_doc.github_account}}.{{rolename}}
 ```
 
 ### Install with git
 
-If you do not want a global install clone it to in your `roles_path`.
+If you do not want a global installation, clone it into your `roles_path`.
 
 ```shell
-git clone git@github.com:{{github_account}}/ansible-{{rolename}}.git /path/to/roles_path
+git clone git@github.com:{{role_doc.github_account}}/ansible-{{rolename}}.git /path/to/roles_path
 ```
 
 But I often add it as a submdule in a given `playbook_dir` repository.
 
 ```shell
-git submdule add git@github.com:{{github_account}}/ansible-{{rolename}}.git playbook_dir/roles/{{rolename}}
+git submodule add git@github.com:{{role_doc.github_account}}/ansible-{{rolename}}.git <playbook_dir>/roles/{{rolename}}
 ```
 
 As the role is not managed by Ansible Galaxy, you do not have to specify the
@@ -126,12 +125,12 @@ Here's a more complex example wich further illustrates usage.
 None.
 {% endif %}
 {# #}
-{# read todos from docs/main.yml #}
-{% if todos is defined and todos|length() %}
+{# read role_doc.todos from docs/docs.yml #}
+{% if role_doc.todos is defined and role_doc.todos|length() %}
 
 ## Todo
 
-{% for todo in todos %}
+{% for todo in role_doc.todos %}
   * {{ todo }}
   {% endfor %}
   {% endif %}
