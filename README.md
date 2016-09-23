@@ -6,11 +6,13 @@ ansidoc is a simple tool to generate your ansible role documentation.
 
 ## Prepare your role
 
-For best results, add those extra variables to your `meta/main.yml`.
+For best results, create a `docs/docs.yml` file inside your role and fill those
+variables:
 
 ```yaml
-rolename: <your-role-name>
-github_account: <your-role-github-username>
+---
+
+github_account: <your-role-github-account-username>
 todos: [] # (optional) list of todos to print in your README file
 requirements: [] # (optional) explanation of requirements to use your role
 
@@ -23,8 +25,8 @@ synopsis: |
   - ...
 ```
 
-Content of your role `vars/*` and `defaults/*` will be literally inserted in
-between `yaml` codeblocks. Put nice comments//explanations in them!
+Content of your role `vars/*` and `defaults/*` will also be literally inserted
+in between `yaml` codeblocks. Put nice comments//explanations in them!
 
 ## cli
 
@@ -62,6 +64,7 @@ ansidoc.run()
 - role dependency grapher
 - role variables analysis (to audit what is defined where)
 - create sphinx documentation for this program
+- make this a sphinx plugin
 
 # License
 
