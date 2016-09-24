@@ -2,21 +2,22 @@
 
 {{ galaxy_info.description }}
 
-{% if role_doc.description is not none %}
-## Description
-
-{{ role_doc.description }}
-
-{% endif %}
 ## Requirements
 
 ### Ansible version
 
 Minimum required ansible version is {{ galaxy_info.min_ansible_version }}.
-{% if role_doc.requirements is defined and role_doc.requirements|length() %}
+
+{% if role_doc.requirements is defined %}
 ### Other considerations
 
-{{ requirements }}
+{{ role_doc.requirements }}
+
+{% endif %}
+{% if role_doc.description is defined %}
+## Description
+
+{{ role_doc.description }}
 {% endif %}
 
 ## Role Variables
@@ -107,15 +108,7 @@ Basic usage is:
   - role: {{rolename}}
 ```
 
-{% if advanced_usage is defined %}
-## Advanced usage
-
-Here's a more complex example wich further illustrates usage.
-
-{{advanced_usage}}
-{%endif%}
-
-## Dependencies
+## Ansible role dependencies
 
 {% if dependencies is defined and dependencies|length() %}
 {% for dependencie in dependencies %}
@@ -143,6 +136,12 @@ None.
 
 {{ galaxy_info.author }}.
 
+{% if role_doc.role_stack is defined and role_doc.role_stack|length() %}
+## Role stack
+
+{{ role_doc.role_stack }}
+
+{% endif %}
 ---
 This README was generated using ansidoc. This tool is available on pypi!
 
