@@ -69,3 +69,7 @@ ansidoc.run()
 # License
 
 MIT.
+
+# Similar Projects
+
+* [Ansible-DocGen](https://github.com/toast38coza/Ansible-DocGen)
