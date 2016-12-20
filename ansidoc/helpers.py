@@ -9,13 +9,13 @@ def load_yml_file(fpath, verbose):
         with open(fpath, 'r') as stream:
             content = yaml.safe_load(stream)
         if verbose:
-            print("Loaded " + fpath + ":\n\n")
+            print("Loaded '%s':\n" % fpath)
             print(content)
             print("\n")
     else:
         content = None
         if verbose:
-            print(fpath + " doesn't exist...")
+            print("'%s' doesn't exist..." % fpath)
 
     return content
 
@@ -77,14 +77,14 @@ def read_files(dpath, verbose):
         dfiles = []
         for f in get_filenames(dpath):
             if verbose:
-                print("Reading file " + os.path.join(dpath, f))
+                print("Reading file '%s'" % os.path.join(dpath, f))
             dfiles.append(
                 {"filename": f, "content": read_file(os.path.join(dpath, f))})
         return dfiles
     else:
         return None
         if verbose:
-            print(dpath + " directory doesn't exist...skipping")
+            print("'%s' directory doesn't exist...skipping" % dpath)
 
 # def make_doc_dir():
 #     """Create docs folder inside role."""

@@ -8,10 +8,10 @@ class Ansidoc():
 
     def __init__(self, **kwargs):
         """initiate object with provided options."""
-        self.dirpath = kwargs.get('dirpath')
         self.verbose = kwargs.get('verbose')
         self.dry_run = kwargs.get('dry_run')
         self.target = kwargs.get('target')
+        self.dirpath = kwargs.get('dirpath')
 
     def _make_role_symlink(self, rolepath):
         """
@@ -21,6 +21,7 @@ class Ansidoc():
         role create a symlink from the <playbook_dir>/docs to
         <playbook_dir>/roles/rolename/docs/index.
         """
+
         # symlink src
         symlink_target = os.path.abspath(os.path.join(rolepath, self.target))
 
@@ -28,7 +29,7 @@ class Ansidoc():
         symlink_name = "role-" + os.path.basename(rolepath) + "-" + self.target
 
         if self.verbose:
-            print("Generating symlink to role " + symlink_target + " ...")
+            print("Generating symlink to role '%s' ..." % symlink_target)
 
         if not os.path.islink(symlink_name):
             os.symlink(symlink_target, symlink_name)
@@ -40,11 +41,12 @@ class Ansidoc():
         Informations are picked in defaults/*, vars/* meta/main.yml and
         docs/*.yml.
         """
-        rolename = os.path.basename(rolepath)
 
-        print("Generating doc for role " + rolename + "...\n")
+        rolename = os.path.basename(os.path.abspath(rolepath))
+
+        print("Generating doc for role '%s'..." % rolename)
         if self.verbose:
-            print("Current rolepath is : " + rolepath)
+            print("Current rolepath is: '%s'" % rolepath)
 
         # create symlink if needed
         if self.target:
@@ -83,14 +85,11 @@ class Ansidoc():
         if self.verbose or self.dry_run:
             print(t)
 
-        # create readme file in rolepath/docs
-        # makedirs(path.abspath(rolepath + "/docs"), mode=755, exist_ok=False)
-
         # create readme file in rolepath/README.md
         if not self.dry_run:
             helpers.write_file(t, os.path.join(rolepath, "README.md"))
 
-        print("Role " + rolename + " ...done\n")
+        print("Role '%s' ...done\n" % rolename)
 
     def run(self):
         """
