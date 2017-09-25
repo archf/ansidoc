@@ -1,0 +1,4 @@
+{% for role_docs_md_file in role_docs_md_files %}
+{{role_docs_md_file['content']}}
+{% if loop.length > 1 %} {% endif %}
+{% endfor %}

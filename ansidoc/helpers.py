@@ -5,18 +5,30 @@ import yaml
 
 def load_yml_file(fpath, verbose):
     """safe_load a yaml file."""
-    if os.path.isfile(fpath):
+
+    try:
         with open(fpath, 'r') as stream:
             content = yaml.safe_load(stream)
         if verbose:
             print("Loaded '%s':\n" % fpath)
             print(content)
             print("\n")
-    else:
+    except FileNotFoundError as e:
         content = None
-        if verbose:
-            print("'%s' doesn't exist..." % fpath)
+        print(e)
 
+    return content
+
+def load_yml_files(dpath, verbose):
+    """
+    Safe load multiple yaml files.
+
+    All top level values are expected to be keys.
+    """
+    if os.path.isdir(dpath):
+        content = {}
+        for f in get_filenames(dpath, '*.yml'):
+            content = {**content, **load_yml_file(os.path.join(dpath, f), verbose)}
     return content
 
 
@@ -34,11 +46,18 @@ def write_file(data, fpath):
                 f.write(data)
 
 
-def get_filenames(dpath):
-    """Return *.{yml,json} files in given directory."""
+def get_filenames(dpath, pattern):
+    """Yield files in given directory matching pattern."""
     for file in os.listdir(dpath):
-        if fnmatch.fnmatch(file, '*.json') or fnmatch.fnmatch(file, '*.yml'):
-            yield (file)
+        if pattern == '*.yml':
+            if fnmatch.fnmatch(file, pattern) or fnmatch.fnmatch(file, '*.yaml'):
+                yield (file)
+        elif pattern == '*.json':
+            if fnmatch.fnmatch(file, pattern) or fnmatch.fnmatch(file, '*.jsn'):
+                yield (file)
+        elif pattern == '*.md':
+            if fnmatch.fnmatch(file, pattern):
+                yield (file)
 
 
 def read_file(fpath):
@@ -64,32 +83,3 @@ def read_file(fpath):
         f.seek(pos)
 
         return f.read()
-
-
-def read_files(dpath, verbose):
-    """
-    Read every files files under a given directory.
-
-    Return a list of dictionaries. Each dictionary contains the filename
-    and the file content.
-    """
-    if os.path.isdir(dpath):
-        dfiles = []
-        for f in get_filenames(dpath):
-            if verbose:
-                print("Reading file '%s'" % os.path.join(dpath, f))
-            dfiles.append(
-                {"filename": f, "content": read_file(os.path.join(dpath, f))})
-        return dfiles
-    else:
-        return None
-        if verbose:
-            print("'%s' directory doesn't exist...skipping" % dpath)
-
-# def make_doc_dir():
-#     """Create docs folder inside role."""
-#     docdir = path.abspath(rolepath + "/docs")
-
-#     # make sure destination exist, if not create it
-#     if not path.isdir(symlink_target):
-#         mkdir(symlink_target,'755')

@@ -11,7 +11,8 @@ class Ansidoc():
         self.verbose = kwargs.get('verbose')
         self.dry_run = kwargs.get('dry_run')
         self.target = kwargs.get('target')
-        self.dirpath = kwargs.get('dirpath')
+        self.dirpath = os.path.expanduser(kwargs.get('dirpath'))
+        self.opts = kwargs
 
     def _make_role_symlink(self, rolepath):
         """
@@ -44,43 +45,50 @@ class Ansidoc():
 
         rolename = os.path.basename(os.path.abspath(rolepath))
 
-        print("Generating doc for role '%s'..." % rolename)
         if self.verbose:
+            print("Generating doc for role '%s'..." % rolename)
             print("Current rolepath is: '%s'" % rolepath)
 
         # create symlink if needed
         if self.target:
             self._make_role_symlink(rolepath)
 
-        # load meta/main.yml
-        metainfos = helpers.load_yml_file(
+        # load role meta/main.yml
+        meta_vars = helpers.load_yml_file(
             os.path.join(rolepath, "meta/main.yml"), self.verbose)
 
-        # load docs/main.yml
-        docfile = helpers.load_yml_file(
-            os.path.join(rolepath, "docs/docs.yml"), self.verbose)
+        # load role docs/*.yml
+        docs_vars = helpers.load_yml_files(
+            os.path.join(rolepath, "docs"), self.verbose)
 
-        # load files in vars/*
+        # load literaly role docs/*.md
+        docs_md_files = helpers.read_files(
+            os.path.join(rolepath, "docs"), '*.md', self.verbose)
+
+        # load literaly role vars/*.yml
         vars_files = helpers.read_files(
-            os.path.join(rolepath, "vars"), self.verbose)
+            os.path.join(rolepath, "vars"), '*.yml', self.verbose)
 
-        # load defaults/*
+        # load literaly role defaults/*.yml
         defaults_files = helpers.read_files(
-            os.path.join(rolepath, "defaults"), self.verbose)
+            os.path.join(rolepath, "defaults"), '*.yml', self.verbose)
 
         # load template and create templating environment
         env = Environment(loader=PackageLoader('ansidoc', 'templates'),
-                          lstrip_blocks=True, trim_blocks=True)
+                          lstrip_blocks=False, trim_blocks=True)
 
         # render readme
         template = env.get_template('readme.j2')
 
         # render method accepts the same arguments as the dict constructor
-        t = template.render(metainfos,
+        t = template.render(self.opts,
                             rolename=rolename,
-                            role_doc=docfile,
-                            role_vars=vars_files,
-                            role_defaults=defaults_files)
+                            role_meta_vars=meta_vars,
+                            role_docs_vars=docs_vars,
+                            role_docs_md_files=docs_md_files,
+                            role_vars_files=vars_files,
+                            role_defaults_files=defaults_files
+                            )
 
         if self.verbose or self.dry_run:
             print(t)
@@ -89,7 +97,8 @@ class Ansidoc():
         if not self.dry_run:
             helpers.write_file(t, os.path.join(rolepath, "README.md"))
 
-        print("Role '%s' ...done\n" % rolename)
+        if self.verbose:
+            print("Role '%s' ...done\n" % rolename)
 
     def run(self):
         """

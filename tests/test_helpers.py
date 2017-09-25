@@ -4,10 +4,11 @@ from ansidoc import helpers
 
 
 def test_load_yml_file(roledir):
+    """Test yml file loading."""
     content = helpers.load_yml_file(os.path.join(roledir,
-                                                 "defaults/main.yml"))
+                                                 "defaults/main.yml"),
+                                    verbose=False)
     assert content["fake_role_pkg_state"] == "latest"
-
 
 # using tmpdir fixture, test both helpers.write_file and helpers.write_file
 def test_write_file(tmpdir):
@@ -27,12 +28,9 @@ def test_write_file(tmpdir):
 
 
 def test_get_filenames(roledir):
-    for i in helpers.get_filenames(os.path.join(roledir, "vars")):
+    """Retreive all files in role /vars/*."""
+    for i in helpers.get_filenames(os.path.join(roledir, "vars"), '*.yml'):
         assert i in ["RedHat.yml", "Debian.yml"]
-
-
-def test_read_files(roledir):
-    pass
 
 
 def test_make_role_symlink():

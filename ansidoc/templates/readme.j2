@@ -1,158 +1,52 @@
-# ansible-{{ rolename }}
+# ansible-{{rolename}}
 
-{{ galaxy_info.description }}
+{{role_meta_vars['galaxy_info']['description']}}
 
-## Requirements
+## Ansible requirements
 
 ### Ansible version
 
-Minimum required ansible version is {{ galaxy_info.min_ansible_version }}.
+Minimum required ansible version is {{role_meta_vars['galaxy_info']['min_ansible_version']}}.
 
-{% if role_doc.requirements is defined %}
-### Other considerations
+### Ansible role dependencies
 
-{{ role_doc.requirements }}
-
-{% endif %}
-{% if role_doc.description is defined %}
-## Description
-
-{{ role_doc.description }}
-{% endif %}
-
-## Role Variables
-
-### Variables conditionally loaded
-
-{% if role_vars is not none %}
-Those variables from `vars/*.{yml,json}` are loaded dynamically during task
-runtime using the `include_vars` module.
-{% for el in role_vars %}
-
-Variables loaded from `vars/{{ el.filename }}`.
-
-```yaml
-{{ el.content }}
-```
-{% endfor %}
-{#
-## All vars in table format.
-
-{% if galaxy_info.required_variables %}
-## Required variables:
-| Parameter      | Example    | Default    | Comment |
-|----------------|------------|------------|---------|
-{% for var in meta_info.required_variables%}
-|`{{var.key}}`|`{{var.example}}`|{{var.description}}|
-{% endfor %}
-{% endif %}
-#}
-{% else %}
-None.
-{% endif %}
-
-### Default vars
-
-{# print name and content #}
-{% if role_defaults is not none %}
-{% for el in role_defaults %}
-Defaults from `defaults/{{ el.filename }}`.
-
-```yaml
-{{ el.content }}
-```
-{% endfor %}
-
-{% else %}
-None.
-{% endif %}
-
-## Installation
-
-### Install with Ansible Galaxy
-
-```shell
-ansible-galaxy install {{role_doc.github_account}}.{{rolename}}
-```
-
-Basic usage is:
-
-```yaml
-- hosts: all
-  roles:
-    - role: {{role_doc.github_account}}.{{rolename}}
-```
-
-### Install with git
-
-If you do not want a global installation, clone it into your `roles_path`.
-
-```shell
-git clone git@github.com:{{role_doc.github_account}}/ansible-{{rolename}}.git /path/to/roles_path
-```
-
-But I often add it as a submdule in a given `playbook_dir` repository.
-
-```shell
-git submodule add git@github.com:{{role_doc.github_account}}/ansible-{{rolename}}.git <playbook_dir>/roles/{{rolename}}
-```
-
-As the role is not managed by Ansible Galaxy, you do not have to specify the
-github user account.
-
-Basic usage is:
-
-```yaml
-- hosts: all
-  roles:
-  - role: {{rolename}}
-```
-
-## Ansible role dependencies
-
-{% if dependencies is defined and dependencies|length() %}
-{% for dependencie in dependencies %}
-  * {{ dependencie }}
+{% if role_meta_vars['dependencies'] is defined and role_meta_vars['dependencies']|length() %}
+{% for dependencie in role_meta_vars['dependencies'] %}
+  * {{dependencie}}
 {% endfor %}
 {% else %}
 None.
 {% endif %}
-{# #}
-{# read role_doc.todos from docs/docs.yml #}
-{% if role_doc.todos is defined and role_doc.todos|length() %}
 
-## Todo
+{# installation #}
+{% if not private %}
+{% include "readme_role_installation.j2" %}
 
-{% for todo in role_doc.todos %}
-  * {{ todo }}
-  {% endfor %}
-  {% endif %}
+{% endif %}
+{# usage guide // doc from md files #}
+{% if role_docs_md_files is not none %}
+{% include "readme_role_md_doc.j2" %}
+
+{% endif %}
+{# role vars #}
+{% if role_vars_files is not none or role_defaults_files is not none %}
+{% include "readme_role_vars.j2" %}
+
+{% endif %}
+{# todo list #}
+{% if role_docs_vars['todos'] is defined and role_docs_vars['todos']|length() %}
+{% include "readme_role_todo.j2" %}
+{% endif %}
 
 ## License
 
-{{ galaxy_info.license }}.
+{{role_meta_vars['galaxy_info']['license']}}.
 
 ## Author Information
 
-{{ galaxy_info.author }}.
+{{role_meta_vars['galaxy_info']['author']}}.
 
-{% if role_doc.role_stack is defined and role_doc.role_stack|length() %}
-## Role stack
-
-{{ role_doc.role_stack }}
-
+{# ansidoc footer #}
+{% if not no_ansidoc_footer %}
+{% include "readme_ansidoc_footer.j2" %}
 {% endif %}
----
-This README was generated using ansidoc. This tool is available on pypi!
-
-```shell
-pip3 install ansidoc
-
-# validate by running a dry-run (will output result to stdout)
-ansidoc --dry-run <rolepath>
-
-# generate you role readme file
-ansidoc <rolepath>
-```
-
-You can even use it programatically from sphinx. Check it out.

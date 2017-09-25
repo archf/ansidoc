@@ -1,0 +1,40 @@
+## Installation
+
+### Install with Ansible Galaxy
+
+```shell
+ansible-galaxy install {{role_docs_vars['github_account']}}.{{rolename}}
+```
+
+Basic usage is:
+
+```yaml
+- hosts: all
+  roles:
+    - role: {{role_docs_vars['github_account']}}.{{rolename}}
+```
+
+### Install with git
+
+If you do not want a global installation, clone it into your `roles_path`.
+
+```shell
+git clone git@github['com']:{{role_docs_vars['github_account']}}/ansible-{{rolename}}.git /path/to/roles_path
+```
+
+But I often add it as a submdule in a given `playbook_dir` repository.
+
+```shell
+git submodule add git@github['com']:{{role_docs_vars['github_account']}}/ansible-{{rolename}}.git <playbook_dir>/roles/{{rolename}}
+```
+
+As the role is not managed by Ansible Galaxy, you do not have to specify the
+github user account.
+
+Basic usage is:
+
+```yaml
+- hosts: all
+  roles:
+  - role: {{rolename}}
+```

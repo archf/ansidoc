@@ -1,0 +1,73 @@
+## Role Variables
+
+Variables are divided in three types.
+
+The [default vars](#default-vars) section shows you which variables you may
+override in your ansible inventory. As a matter of fact, all variables should
+be defined there for explicitness, ease of documentation as well as overall
+role manageability.
+
+The [mandatory variables](#mandatory-variables) section contains variables that
+for several reasons do not fit into the default variables. As name implies,
+they must absolutely be defined in the inventory or else the role will
+fail. It is a good thing to avoid reach for these as much as possible and/or
+design the role with clear behavior when they're undefined.
+
+The [context variables](#context-variables) are shown in section below hint you
+on how runtime context may affects role execution.
+
+{% if role_defaults_files is not none %}
+### Default vars
+
+{% for role_defaults_file in role_defaults_files %}
+Role default variables from `defaults/{{role_defaults_file['filename']}}`.
+
+```yaml
+{{role_defaults_file['content']}}
+```
+{% if loop.length > 1 %} {% endif %}
+{% endfor %}
+{% else %}
+None.
+{% endif %}
+
+### Mandatory variables.
+
+{% if role_docs_vars['mandatory_variables'] is defined and
+role_docs_vars['mandatory_variables'] is not none %}
+{{ role_docs_vars['mandatory_variables'] }}
+{% else %}
+None.
+{% endif %}
+
+{% if role_vars_files is not none %}
+### Context variables
+
+Those variables from `vars/*.{yml,json}` are loaded dynamically during task
+runtime using the `include_vars` module.
+{% for role_vars_file in role_vars_files %}
+
+Variables loaded from `vars/{{role_vars_file['filename']}}`.
+
+```yaml
+{{role_vars_file['content']}}
+```
+{% if loop.length > 1 %} {% endif %}
+{% endfor %}
+{#
+This may not be compatible when using sphinx commonmark parser
+to generate html.
+### All vars in table format.
+
+{% if role_meta_vars['galaxy_info']['required_variables'] %}
+## Required variables:
+| Parameter      | Example    | Default    | Comment |
+|----------------|------------|------------|---------|
+{% for var in meta_info['required_variables']%}
+|`{{var['key']}}`|`{{var['example']}}`|{{var['description']}}|
+{% endfor %}
+{% endif %}
+#}
+{% else %}
+None.
+{% endif %}
