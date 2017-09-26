@@ -11,7 +11,8 @@ def _augment_parser(parser):
     #     help="output file path (export and config subcommands)")
 
     parser.add_argument("-d", "--dry-run", action='store_true', dest="dry_run",
-                        help="dry run, will print result to stdout")
+                        help="dry run, Outputs pure markdown to stdout \
+                            nothing is written to disk")
 
     parser.add_argument(
         "-s",
@@ -28,7 +29,7 @@ def _augment_parser(parser):
             over subdirectories assuming each of them contains a role.")
 
     parser.add_argument(
-        "-nf", "--no-ansidoc-footer", action="store_false",
+        "-nf", "--no-ansidoc-footer", action="store_true",
         help="Do not render the ansidoc project footer.")
 
     parser.add_argument(

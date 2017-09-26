@@ -31,7 +31,7 @@ Role default variables from `defaults/{{role_defaults_file['filename']}}`.
 None.
 {% endif %}
 
-### Mandatory variables.
+### Mandatory variables
 
 {% if role_docs_vars['mandatory_variables'] is defined and
 role_docs_vars['mandatory_variables'] is not none %}
@@ -40,9 +40,9 @@ role_docs_vars['mandatory_variables'] is not none %}
 None.
 {% endif %}
 
-{% if role_vars_files is not none %}
 ### Context variables
 
+{% if role_vars_files is not none %}
 Those variables from `vars/*.{yml,json}` are loaded dynamically during task
 runtime using the `include_vars` module.
 {% for role_vars_file in role_vars_files %}
@@ -52,7 +52,6 @@ Variables loaded from `vars/{{role_vars_file['filename']}}`.
 ```yaml
 {{role_vars_file['content']}}
 ```
-{% if loop.length > 1 %} {% endif %}
 {% endfor %}
 {#
 This may not be compatible when using sphinx commonmark parser
@@ -70,4 +69,5 @@ to generate html.
 #}
 {% else %}
 None.
+
 {% endif %}

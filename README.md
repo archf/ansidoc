@@ -49,7 +49,8 @@ optional arguments:
   -h, --help            show this help message and exit
   -v, --verbose         increase output verbosity
   -V, --version         show program's version number and exit
-  -d, --dry-run         dry run, will print result to stdout
+  -d, --dry-run         dry run, Outputs pure markdown to stdout nothing is
+                        written to disk
   -s TARGET             (docs | README.md) Create a symlink in PWD to TARGET.
                         This is useful when used from sphinx as you cannot add
                         relative entries such as '../*' in the toctree. If
@@ -87,7 +88,7 @@ ansidoc.run()
   - search paths to find templates (`.ansidoc/templates/*`?)
 - multi-role variables
   - search paths to find config (`.ansidoc/config.yml`?)
-- exclude list
+  - exclude list configurable in config file
 
 ## License
 

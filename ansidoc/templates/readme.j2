@@ -36,12 +36,16 @@ None.
 {# todo list #}
 {% if role_docs_vars['todos'] is defined and role_docs_vars['todos']|length() %}
 {% include "readme_role_todo.j2" %}
+
 {% endif %}
+{# todo list #}
+{% if role_meta_vars['galaxy_info']['license'] is defined %}
 
 ## License
 
 {{role_meta_vars['galaxy_info']['license']}}.
 
+{% endif %}
 ## Author Information
 
 {{role_meta_vars['galaxy_info']['author']}}.

@@ -75,7 +75,7 @@ class Ansidoc():
 
         # load template and create templating environment
         env = Environment(loader=PackageLoader('ansidoc', 'templates'),
-                          lstrip_blocks=False, trim_blocks=True)
+                          lstrip_blocks=True, trim_blocks=True)
 
         # render readme
         template = env.get_template('readme.j2')
@@ -108,10 +108,17 @@ class Ansidoc():
         the dirpath basename. See dirpath positional argument help for more
         details.
         """
+        # loop over multiple roles
         if os.path.basename(self.dirpath) == 'roles':
-            # loop over multiple roles
+            exclude_list = self.opts.get('exclude', [])
+            if len(exclude_list) > 0:
+                exclude_list = exclude_list.split(',')
             for role in os.listdir(self.dirpath):
-                self._make_role_doc(os.path.join(self.dirpath, role))
+                if role not in exclude_list:
+                    self._make_role_doc(os.path.join(self.dirpath, role))
+                else:
+                    if self.verbose:
+                        print("Skipping role: '%s'" % role)
+        # run on a single role
         else:
-            # run on a single role
             self._make_role_doc(self.dirpath)
