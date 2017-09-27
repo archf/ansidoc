@@ -89,6 +89,7 @@ ansidoc.run()
 - multi-role variables
   - search paths to find config (`.ansidoc/config.yml`?)
   - exclude list configurable in config file
+- variable to express role status, badges?
 
 ## License
 
