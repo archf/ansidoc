@@ -83,3 +83,24 @@ def read_file(fpath):
         f.seek(pos)
 
         return f.read()
+
+
+
+def read_files(dpath, type, verbose):
+    """
+    Read every files files under a given directory.
+     Return a list of dictionaries. Each dictionary contains the filename
+    and the file content.
+    """
+    if os.path.isdir(dpath):
+        dfiles = []
+        for f in get_filenames(dpath, type):
+            if verbose:
+                print("Reading file '%s'" % os.path.join(dpath, f))
+            dfiles.append(
+                {"filename": f, "content": read_file(os.path.join(dpath, f))})
+        return dfiles
+    else:
+        return None
+        if verbose:
+            print("'%s' directory doesn't exist...skipping" % dpath)
